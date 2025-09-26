@@ -28,7 +28,7 @@ class PrototypeData:
     def fake_address(self) -> str:
         """Generate a fake address."""
         return self.faker.address()
-
+ 
     def fake_email(self) -> str:
         """Generate a fake email address."""
         return self.faker.email()
