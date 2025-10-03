@@ -21,16 +21,34 @@ class PrototypeData:
             Faker.seed(seed)
             random.seed(seed)
 
-    def fake_name(self) -> str:
-        """Generate a fake full name."""
-        return self.faker.name()
+    def fake_choice(self, choices: list[str], probs: list[float] | None = None) -> str:
+        if not choices:
+            raise ValueError("choices list cannot be empty.")
+
+        if probs is not None:
+            if len(probs) != len(choices):
+                raise ValueError("Length of probs must match length of choices.")
+            if not np.isclose(sum(probs), 1.0):
+                raise ValueError("Probabilities must sum to 1.")
+        else:
+            # Assign equal probability if none provided
+            probs = [1 / len(choices)] * len(choices)
+
+        return np.random.choice(choices, p=probs)
+
+
+    def fake_name(self, sex: str | None = None) -> str:
+        if sex == "M":
+            return self.faker.name_male()
+        elif sex == "F":
+            return self.faker.name_female()
+        else:
+            return self.faker.name()
 
     def fake_address(self) -> str:
-        """Generate a fake address."""
         return self.faker.address()
  
     def fake_email(self) -> str:
-        """Generate a fake email address."""
         return self.faker.email()
 
     def generate_distribution(
